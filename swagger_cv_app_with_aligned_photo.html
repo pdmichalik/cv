@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Przemysław Michalik - Developer API CV</title>
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #fafafa;
+    color: #333;
+    max-width: 960px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 8px;
+  }
+  h1 {
+    color: #0a7dc3;
+  }
+  h2 {
+    background: #0a7dc3;
+    color: white;
+    padding: 0.5rem 1rem;
+    margin: 1.5rem 0 0;
+    border-radius: 4px;
+    font-size: 1.1rem;
+  }
+  h2:hover {
+    background-color: #0963a3;
+    cursor: pointer;
+  }
+  .toggle-content {
+    background: white;
+    padding: 1rem;
+    border: 1px solid #e0e0e0;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    margin-bottom: 1rem;
+  }
+  code {
+    background: #eef;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: monospace;
+  }
+  ul {
+    margin: 0.5rem 0 1rem 1.5rem;
+  }
+  button {
+    float: right;
+    margin: 1rem;
+    background-color: #0a7dc3;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  button:hover {
+    background-color: #0963a3;
+  }
+  @media print {
+    button {
+      display: none;
+    }
+    body {
+      background: white;
+      color: black;
+      box-shadow: none;
+    }
+    .toggle-content {
+      display: block !important;
+    }
+  }
+</style>
+<style>
+  .endpoint-header {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    margin: 1.5rem 0 0;
+    padding: 0.5rem 1rem;
+    background-color: #f0f7f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .method-badge {
+    background-color: #4caf50;
+    color: white;
+    font-weight: bold;
+    font-family: monospace;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-right: 0.5rem;
+  }
+  .endpoint-header:hover {
+    background-color: #e3f2ed;
+  }
+</style>
+</head>
+<body><button onclick="window.print()" style="float: right; margin: 1rem;">Download as PDF</button><div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;"><img alt="Profile photo" src="profilowe.jpg" style="border-radius: 50%;" width="100"/><div><h1>Przemysław Michalik</h1><p><strong>Developer Experience Lead / Senior Software Engineer</strong></p></div></div>
+
+
+<div class="section" id="about">
+<div class="endpoint-header"><span class="method-badge">GET</span><code> /about.json</code></div><div class="toggle-content"><p id="bio"></p></div>
+</div>
+<div class="section" id="experience">
+<div class="endpoint-header"><span class="method-badge">GET</span><code> /experience.json</code></div><div class="toggle-content"><ul id="experience-list"></ul></div>
+</div>
+<div class="section" id="skills">
+<div class="endpoint-header"><span class="method-badge">GET</span><code> /skills.json</code></div><div class="toggle-content"><ul id="skills-list"></ul></div>
+</div>
+<div class="section" id="projects">
+<div class="endpoint-header"><span class="method-badge">GET</span><code> /projects.json</code></div><div class="toggle-content"><ul id="projects-list"></ul></div>
+</div>
+<script>
+    // Mock API response (you could replace these with real fetch calls to swagger-cv.yaml via backend)
+    const about = {
+      name: "Przemysław Michalik",
+      role: "Developer Experience / Senior Software Engineer",
+      location: "Poland",
+      summary: "Experienced software developer and tech writer with a passion for improving developer onboarding, documentation, and tooling."
+    };
+
+    const experience = [
+      {
+        company: "DevHouse XYZ",
+        role: "Senior Software Engineer",
+        period: "2021-2025",
+        stack: ["C#", ".NET", "Azure", "SQL Server", "Docker"],
+        highlights: [
+          "Led adoption of structured logging with Serilog.",
+          "Introduced DevEx metrics via internal observability tooling.",
+          "Mentored junior developers and improved code review culture."
+        ]
+      },
+      {
+        company: "Softline Studio",
+        role: "Full-Stack Developer",
+        period: "2017-2021",
+        stack: ["JavaScript", "React", "C#", "Azure DevOps"],
+        highlights: [
+          "Implemented CI/CD pipelines.",
+          "Contributed to UX-focused components and documentation."
+        ]
+      }
+    ];
+
+    const skills = {
+      languages: ["C#", "JavaScript", "SQL", "Markdown"],
+      tools: ["Azure DevOps", "Git", "Swagger", "Serilog", "ReSharper"],
+      devrel: ["Docs-as-code", "API Design", "DX Tooling", "Dev Feedback Loops"],
+      softSkills: ["Tech writing", "Mentoring", "Cross-team collaboration"]
+    };
+
+    const projects = [
+      {
+        name: "DevEx Metrics Dashboard",
+        description: "Internal tool to visualize friction in the developer workflow.",
+        tech: ["React", ".NET Core", "OpenTelemetry"]
+      },
+      {
+        name: "BaGetter NuGet Mirror Fix",
+        description: "Contributed fixes and docs to improve offline NuGet caching."
+      }
+    ];
+
+    // Render About
+    document.getElementById('bio').textContent = about.summary;
+
+    // Render Experience
+    const expList = document.getElementById('experience-list');
+    experience.forEach(exp => {
+      const li = document.createElement('li');
+      li.innerHTML = `<strong>${exp.role}</strong> at ${exp.company} (${exp.period})<br>
+                      Stack: <code>${exp.stack.join(', ')}</code><br>
+                      Highlights:<ul>${exp.highlights.map(h => `<li>${h}</li>`).join('')}</ul>`;
+      expList.appendChild(li);
+    });
+
+    // Render Skills
+    const skillList = document.getElementById('skills-list');
+    for (let category in skills) {
+      const li = document.createElement('li');
+      li.innerHTML = `<strong>${category}</strong>: ${skills[category].join(', ')}`;
+      skillList.appendChild(li);
+    }
+
+    // Render Projects
+    const projList = document.getElementById('projects-list');
+    projects.forEach(proj => {
+      const li = document.createElement('li');
+      li.innerHTML = `<strong>${proj.name}</strong>: ${proj.description}<br>
+                      ${proj.tech ? `Tech: <code>${proj.tech.join(', ')}</code>` : ''}`;
+      projList.appendChild(li);
+    });
+  </script>
+<script>
+  document.querySelectorAll('.section h2').forEach(header => {
+    const content = header.nextElementSibling;
+    if (content) {
+      content.style.display = 'none';
+      header.style.cursor = 'pointer';
+      header.addEventListener('click', () => {
+        content.style.display = content.style.display === 'none' ? 'block' : 'none';
+      });
+    }
+  });
+</script>
+<div class="section" id="contact"><div class="endpoint-header"><span class="method-badge" style="background-color:#2196f3;">POST</span><code> /contact</code></div><div class="toggle-content">
+<form id="contact-form" onsubmit="event.preventDefault(); sendMessage();">
+<label>Name:<br/><input id="name" required="" type="text"/></label><br/><br/>
+<label>Email:<br/><input id="email" required="" type="email"/></label><br/><br/>
+<label>Message:<br/><textarea id="message" required="" rows="5"></textarea></label><br/><br/>
+<button type="submit">Send Message</button>
+<p id="response-msg" style="margin-top:1rem;"></p>
+</form>
+</div></div>
+<script>
+function sendMessage() {
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const message = document.getElementById("message").value.trim();
+  const response = document.getElementById("response-msg");
+
+  if (name && email && message) {
+    response.textContent = "✅ Message sent successfully (simulated).";
+    response.style.color = "green";
+    document.getElementById("contact-form").reset();
+  } else {
+    response.textContent = "❌ Please fill in all fields.";
+    response.style.color = "red";
+  }
+}
+</script>
+<script>
+  document.querySelectorAll('.endpoint-header').forEach(header => {
+    const content = header.nextElementSibling;
+    if (content && content.classList.contains('toggle-content')) {
+      content.style.display = 'none';
+      header.style.cursor = 'pointer';
+      header.addEventListener('click', () => {
+        content.style.display = content.style.display === 'none' ? 'block' : 'none';
+      });
+    }
+  });
+</script>
+</body>
+</html>
