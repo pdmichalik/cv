@@ -1,0 +1,14 @@
+[
+  {
+    "degree": "MSc in Computer Science",
+    "institution": "Warsaw University of Technology",
+    "period": "2012–2014",
+    "details": "Thesis on distributed systems and cloud architecture."
+  },
+  {
+    "degree": "BSc in Computer Science",
+    "institution": "AGH University of Science and Technology",
+    "period": "2008–2012",
+    "details": "Specialized in software engineering and web development."
+  }
+]

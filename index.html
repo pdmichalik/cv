@@ -116,6 +116,10 @@
 <div class="section" id="projects">
 <div class="endpoint-header"><span class="method-badge">GET</span><code> /projects.json</code></div><div class="toggle-content"><ul id="projects-list"></ul></div>
 </div>
+<div class="section" id="education">
+  <div class="endpoint-header"><span class="method-badge">GET</span><code> /education.json</code></div>
+  <div class="toggle-content"><ul id="education-list"></ul></div>
+</div>
 <script>
   async function loadJSON(path) {
     const response = await fetch(path);
@@ -125,11 +129,12 @@
 
   async function renderCV() {
     try {
-      const [about, experience, skills, projects] = await Promise.all([
+      const [about, experience, skills, projects, education] = await Promise.all([
         loadJSON("./about.json"),
         loadJSON("./experience.json"),
         loadJSON("./skills.json"),
-        loadJSON("./projects.json")
+        loadJSON("./projects.json"),
+        loadJSON("./education.json")
       ]);
 
       // About
@@ -160,6 +165,14 @@
         li.innerHTML = `<strong>${proj.name}</strong>: ${proj.description}<br>
                         ${proj.tech ? `Tech: <code>${proj.tech.join(', ')}</code>` : ''}`;
         projList.appendChild(li);
+      });
+
+      // Education
+      const eduList = document.getElementById('education-list');
+      education.forEach(edu => {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${edu.degree}</strong> at ${edu.institution} (${edu.period})<br>${edu.details || ''}`;
+        eduList.appendChild(li);
       });
     } catch (err) {
       console.error("Error loading CV:", err);
