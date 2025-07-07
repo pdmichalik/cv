@@ -1,0 +1,26 @@
+{
+  "languages": [
+    "C#",
+    "JavaScript",
+    "SQL",
+    "Markdown"
+  ],
+  "tools": [
+    "Azure DevOps",
+    "Git",
+    "Swagger",
+    "Serilog",
+    "ReSharper"
+  ],
+  "devrel": [
+    "Docs-as-code",
+    "API Design",
+    "DX Tooling",
+    "Dev Feedback Loops"
+  ],
+  "softSkills": [
+    "Tech writing",
+    "Mentoring",
+    "Cross-team collaboration"
+  ]
+}

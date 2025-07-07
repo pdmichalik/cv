@@ -1,0 +1,15 @@
+[
+  {
+    "name": "DevEx Metrics Dashboard",
+    "description": "Internal tool to visualize friction in the developer workflow.",
+    "tech": [
+      "React",
+      ".NET Core",
+      "OpenTelemetry"
+    ]
+  },
+  {
+    "name": "BaGetter NuGet Mirror Fix",
+    "description": "Contributed fixes and docs to improve offline NuGet caching."
+  }
+]

@@ -117,87 +117,58 @@
 <div class="endpoint-header"><span class="method-badge">GET</span><code> /projects.json</code></div><div class="toggle-content"><ul id="projects-list"></ul></div>
 </div>
 <script>
-    // Mock API response (you could replace these with real fetch calls to swagger-cv.yaml via backend)
-    const about = {
-      name: "Przemysław Michalik",
-      role: "Developer Experience / Senior Software Engineer",
-      location: "Poland",
-      summary: "Experienced software developer and tech writer with a passion for improving developer onboarding, documentation, and tooling."
-    };
+  async function loadJSON(path) {
+    const response = await fetch(path);
+    if (!response.ok) throw new Error(`Failed to load ${path}`);
+    return await response.json();
+  }
 
-    const experience = [
-      {
-        company: "DevHouse XYZ",
-        role: "Senior Software Engineer",
-        period: "2021-2025",
-        stack: ["C#", ".NET", "Azure", "SQL Server", "Docker"],
-        highlights: [
-          "Led adoption of structured logging with Serilog.",
-          "Introduced DevEx metrics via internal observability tooling.",
-          "Mentored junior developers and improved code review culture."
-        ]
-      },
-      {
-        company: "Softline Studio",
-        role: "Full-Stack Developer",
-        period: "2017-2021",
-        stack: ["JavaScript", "React", "C#", "Azure DevOps"],
-        highlights: [
-          "Implemented CI/CD pipelines.",
-          "Contributed to UX-focused components and documentation."
-        ]
+  async function renderCV() {
+    try {
+      const [about, experience, skills, projects] = await Promise.all([
+        loadJSON("./about.json"),
+        loadJSON("./experience.json"),
+        loadJSON("./skills.json"),
+        loadJSON("./projects.json")
+      ]);
+
+      // About
+      document.getElementById('bio').textContent = about.summary;
+
+      // Experience
+      const expList = document.getElementById('experience-list');
+      experience.forEach(exp => {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${exp.role}</strong> at ${exp.company} (${exp.period})<br>
+                        Stack: <code>${exp.stack.join(', ')}</code><br>
+                        Highlights:<ul>${exp.highlights.map(h => `<li>${h}</li>`).join('')}</ul>`;
+        expList.appendChild(li);
+      });
+
+      // Skills
+      const skillList = document.getElementById('skills-list');
+      for (let category in skills) {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${category}</strong>: ${skills[category].join(', ')}`;
+        skillList.appendChild(li);
       }
-    ];
 
-    const skills = {
-      languages: ["C#", "JavaScript", "SQL", "Markdown"],
-      tools: ["Azure DevOps", "Git", "Swagger", "Serilog", "ReSharper"],
-      devrel: ["Docs-as-code", "API Design", "DX Tooling", "Dev Feedback Loops"],
-      softSkills: ["Tech writing", "Mentoring", "Cross-team collaboration"]
-    };
-
-    const projects = [
-      {
-        name: "DevEx Metrics Dashboard",
-        description: "Internal tool to visualize friction in the developer workflow.",
-        tech: ["React", ".NET Core", "OpenTelemetry"]
-      },
-      {
-        name: "BaGetter NuGet Mirror Fix",
-        description: "Contributed fixes and docs to improve offline NuGet caching."
-      }
-    ];
-
-    // Render About
-    document.getElementById('bio').textContent = about.summary;
-
-    // Render Experience
-    const expList = document.getElementById('experience-list');
-    experience.forEach(exp => {
-      const li = document.createElement('li');
-      li.innerHTML = `<strong>${exp.role}</strong> at ${exp.company} (${exp.period})<br>
-                      Stack: <code>${exp.stack.join(', ')}</code><br>
-                      Highlights:<ul>${exp.highlights.map(h => `<li>${h}</li>`).join('')}</ul>`;
-      expList.appendChild(li);
-    });
-
-    // Render Skills
-    const skillList = document.getElementById('skills-list');
-    for (let category in skills) {
-      const li = document.createElement('li');
-      li.innerHTML = `<strong>${category}</strong>: ${skills[category].join(', ')}`;
-      skillList.appendChild(li);
+      // Projects
+      const projList = document.getElementById('projects-list');
+      projects.forEach(proj => {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${proj.name}</strong>: ${proj.description}<br>
+                        ${proj.tech ? `Tech: <code>${proj.tech.join(', ')}</code>` : ''}`;
+        projList.appendChild(li);
+      });
+    } catch (err) {
+      console.error("Error loading CV:", err);
     }
+  }
 
-    // Render Projects
-    const projList = document.getElementById('projects-list');
-    projects.forEach(proj => {
-      const li = document.createElement('li');
-      li.innerHTML = `<strong>${proj.name}</strong>: ${proj.description}<br>
-                      ${proj.tech ? `Tech: <code>${proj.tech.join(', ')}</code>` : ''}`;
-      projList.appendChild(li);
-    });
-  </script>
+  renderCV();
+</script>
+
 <script>
   document.querySelectorAll('.section h2').forEach(header => {
     const content = header.nextElementSibling;

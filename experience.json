@@ -1,0 +1,34 @@
+[
+  {
+    "company": "DevHouse XYZ",
+    "role": "Senior Software Engineer",
+    "period": "2021-2025",
+    "stack": [
+      "C#",
+      ".NET",
+      "Azure",
+      "SQL Server",
+      "Docker"
+    ],
+    "highlights": [
+      "Led adoption of structured logging with Serilog.",
+      "Introduced DevEx metrics via internal observability tooling.",
+      "Mentored junior developers and improved code review culture."
+    ]
+  },
+  {
+    "company": "Softline Studio",
+    "role": "Full-Stack Developer",
+    "period": "2017-2021",
+    "stack": [
+      "JavaScript",
+      "React",
+      "C#",
+      "Azure DevOps"
+    ],
+    "highlights": [
+      "Implemented CI/CD pipelines.",
+      "Contributed to UX-focused components and documentation."
+    ]
+  }
+]
