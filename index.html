@@ -74,6 +74,16 @@
       display: block !important;
     }
   }
+  .tag {
+    display: inline-block;
+    background-color: #0366d6;
+    color: white;
+    font-size: 0.85rem;
+    font-family: monospace;
+    padding: 2px 6px;
+    margin: 0 4px 2px 0;
+    border-radius: 4px;
+  }
 </style>
 <style>
   .endpoint-header {
@@ -121,6 +131,12 @@
   <div class="toggle-content"><ul id="education-list"></ul></div>
 </div>
 <script>
+  function formatTags(text) {
+    return text.replace(/@(\w+)/g, (match, tag) => {
+      return `<span class="tag">@${tag}</span>`;
+    });
+  }
+
   async function loadJSON(path) {
     const response = await fetch(path);
     if (!response.ok) throw new Error(`Failed to load ${path}`);
@@ -146,7 +162,7 @@
         const li = document.createElement('li');
         li.innerHTML = `<strong>${exp.role}</strong> at ${exp.company} (${exp.period})<br>
                         Stack: <code>${exp.stack.join(', ')}</code><br>
-                        Highlights:<ul>${exp.highlights.map(h => `<li>${h}</li>`).join('')}</ul>`;
+                        Highlights:<ul>${exp.highlights.map(h => `<li>${formatTags(h)}</li>`).join('')}</ul>`;
         expList.appendChild(li);
       });
 

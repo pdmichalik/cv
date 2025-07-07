@@ -11,7 +11,7 @@
       "Docker"
     ],
     "highlights": [
-      "Led adoption of structured logging with Serilog.",
+      "Led adoption of structured logging with @Serilog.",
       "Introduced DevEx metrics via internal observability tooling.",
       "Mentored junior developers and improved code review culture."
     ]
